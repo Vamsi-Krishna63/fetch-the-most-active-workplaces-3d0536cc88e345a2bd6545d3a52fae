@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Typography, Button, CircularProgress, Box } from "@mui/material";
 import { CURRENT_WORKER_ID } from "../App";
@@ -16,9 +16,7 @@ const BookedShifts: React.FC = () => {
 
   const cancelMutation = useMutation({
     mutationFn: (shiftId: number) => {
-      return axios.post<Shift>(`/api/shifts/${shiftId}/cancel`, {
-        workerId: CURRENT_WORKER_ID,
-      });
+      return axios.post<Shift>(`/api/shifts/${shiftId}/cancel`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["available-shifts"] });
@@ -35,7 +33,9 @@ const BookedShifts: React.FC = () => {
     return <Typography color="error">Error loading shifts</Typography>;
   }
 
-  const bookedShifts = data?.data.data.filter((shift) => shift.workerId) ?? [];
+  const bookedShifts = data?.data.data.filter((shift: Shift) => 
+    shift.workerId === CURRENT_WORKER_ID && !shift.cancelledAt
+  ) ?? [];
 
   return (
     <div>
@@ -47,7 +47,7 @@ const BookedShifts: React.FC = () => {
         <Typography color="textSecondary">No booked shifts</Typography>
       ) : (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          {bookedShifts.map((shift) => (
+          {bookedShifts.map((shift: Shift) => (
             <ShiftCard
               key={shift.id}
               shift={shift}

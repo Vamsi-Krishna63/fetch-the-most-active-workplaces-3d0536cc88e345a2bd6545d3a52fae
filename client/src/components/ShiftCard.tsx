@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Card, CardContent, Typography, Box, Chip } from "@mui/material";
 import { format } from "date-fns";
 import { Shift } from "../types";
@@ -42,7 +42,7 @@ const ShiftCard: React.FC<ShiftCardProps> = ({ shift, actionButton }) => {
           }}
         >
           <PlaceOutlinedIcon />
-          {shift.workplaceId}
+          Workplace #{shift.workplaceId}
         </Typography>
         <Box sx={{ mb: 3 }}>
           <Typography

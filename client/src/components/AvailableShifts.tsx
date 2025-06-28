@@ -37,7 +37,9 @@ const AvailableShifts: React.FC = () => {
     return <Typography color="error">Error loading shifts</Typography>;
   }
 
-  const availableShifts = data?.data.data.filter((shift) => !shift.workerId) ?? [];
+  const availableShifts = data?.data.data.filter((shift: Shift) => 
+    !shift.workerId
+  ) ?? [];
 
   return (
     <div>
@@ -49,7 +51,7 @@ const AvailableShifts: React.FC = () => {
         <Typography color="textSecondary">No available shifts</Typography>
       ) : (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          {availableShifts.map((shift) => (
+          {availableShifts.map((shift: Shift) => (
             <ShiftCard
               key={shift.id}
               shift={shift}
